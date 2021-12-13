@@ -10,11 +10,11 @@ cd CMSSW_11_0_3/src
 
 cmsenv
 
-mkdir MyAnalysis
+git clone git@github.com:fmanteca/HighPt_DNN.git
 
 cd MyAnalysis
 
-git clone https://github.com/fmanteca/RECOAnalysis.git
+scram b -j 10
 
 cd RECOAnalysis/test
 
