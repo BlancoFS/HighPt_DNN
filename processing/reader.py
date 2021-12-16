@@ -2,6 +2,9 @@ import ROOT
 import argparse
 from math import *
 import os
+import uproot
+import pandas as pd
+import numpy as np
 
 # python reader.py --inputDir /gpfs/projects/cms/fernanpe/ZprimeToMuMu_M-5000_TuneCP5_13TeV-madgraphMLM-pythia8/ZprimeToMuMu_M-5000_ntupler/200630_000605/0000/ --part 1
 
@@ -22,41 +25,23 @@ if __name__ == '__main__':
 
     counter = 0
 
-    out_hits = open('data_' + args.kind + '/output_Hit_' + args.fileNumber + '.txt', 'w')
-    out_muons = open('data_' + args.kind + '/output_Muon_' + args.fileNumber + '.txt', 'w')
-    out_props = open('data_' + args.kind + '/output_Prop_' + args.fileNumber + '.txt', 'w')
     
-    rootfile = ROOT.TFile.Open(args.inputDir + 'tree_' + args.fileNumber + '.root', "READ")
-    tree = rootfile.Get("Events")
-            
-    for event in tree:
+    data_muons = uproot.open(args.inputDir + 'tree_' + args.fileNumber + '.root')['Events'].arrays(variables_muons)
+    data_hits = uproot.open(args.inputDir + 'tree_' + args.fileNumber + '.root')['Events'].arrays(variables_hits)
+    data_props = uproot.open(args.inputDir + 'tree_' + args.fileNumber + '.root')['Events'].arrays(variables_prop)
+    
+    muons = pd.DataFrame.from_dict(data_muons)
+    hits = pd.DataFrame.from_dict(data_hits)
+    props = pd.DataFrame.from_dict(data_props)
+    
+    
+    df_muons.to_csv('data_' + args.kind + '/output_Muon_' + args.fileNumber + '.csv')
+    df_hits.to_csv('data_' + args.kind + '/output_Hit_' + args.fileNumber + '.csv')
+    df_prop.to_csv('data_' + args.kind + '/output_Prop_' + args.fileNumber + '.csv')
+    
+    
 
-        for entry in range(0,eval('event.' + variables_muons[0] + '.size()')):
-                
-                #print str(entry)
-            line = str(eval('event.' + variables_muons[0] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[1] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[2] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[3] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[4] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[5] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[6] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[7] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[8] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[9] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[10] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[11] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[12] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[13] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[14] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[15] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[16] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[17] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[18] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[19] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[20] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[21] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[22] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[23] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[24] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[25] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[26] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[27] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[28] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[29] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_muons[30] + '.at(' + str(entry) + ')'))
-                
-            out_muons.write(line + '\n')
-
-
-        for entry in range(0,eval('event.' + variables_props[0] + '.size()')):
-                
-                #print str(entry)
-            line = str(eval('event.' + variables_props[0] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_props[1] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_props[2] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_props[3] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_props[4] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_props[5] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_props[6] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_props[7] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_props[8] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_props[9] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_props[10] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_props[11] + '.at(' + str(entry) + ')'))
-                
-            out_props.write(line + '\n')
-
-                
-        for entry in range(0,eval('event.' + variables_hits[0] + '.size()')):
-                
-                #print str(entry)
-            line = str(eval('event.' + variables_hits[0] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[1] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[2] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[3] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[4] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[5] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[6] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[7] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[8] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[9] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[10] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[11] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[12] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[13] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[14] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[15] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[16] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[17] + '.at(' + str(entry) + ')'))  + '\t' + str(eval('event.' + variables_hits[18] + '.at(' + str(entry) + ')')) + '\t' + str(eval('event.' + variables_hits[19] + '.at(' + str(entry) + ')'))
-                
-            out_hits.write(line + '\n')
-        
-
-
-    out_hits.close()
-    out_muons.close()
-    out_props.close()
-    rootfile.Close()
+    
+    
+    
+    
