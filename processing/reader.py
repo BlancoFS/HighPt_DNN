@@ -35,9 +35,9 @@ if __name__ == '__main__':
     props = pd.DataFrame.from_dict(data_props)
     
     
-    df_muons.to_csv('data_' + args.kind + '/output_Muon_' + args.fileNumber + '.csv')
-    df_hits.to_csv('data_' + args.kind + '/output_Hit_' + args.fileNumber + '.csv')
-    df_prop.to_csv('data_' + args.kind + '/output_Prop_' + args.fileNumber + '.csv')
+    df_muons.to_csv('data_' + args.kind + '/output_Muon_' + args.fileNumber + '.csv', header=False)
+    df_hits.to_csv('data_' + args.kind + '/output_Hit_' + args.fileNumber + '.csv', header=False)
+    df_prop.to_csv('data_' + args.kind + '/output_Prop_' + args.fileNumber + '.csv', header=False)
     
     
 
