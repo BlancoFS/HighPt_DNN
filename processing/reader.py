@@ -28,16 +28,18 @@ if __name__ == '__main__':
     
     data_muons = uproot.open(args.inputDir + 'tree_' + args.fileNumber + '.root')['Events'].arrays(variables_muons)
     data_hits = uproot.open(args.inputDir + 'tree_' + args.fileNumber + '.root')['Events'].arrays(variables_hits)
-    data_props = uproot.open(args.inputDir + 'tree_' + args.fileNumber + '.root')['Events'].arrays(variables_prop)
-    
+    data_props = uproot.open(args.inputDir + 'tree_' + args.fileNumber + '.root')['Events'].arrays(variables_props)
+
     muons = pd.DataFrame.from_dict(data_muons)
     hits = pd.DataFrame.from_dict(data_hits)
     props = pd.DataFrame.from_dict(data_props)
-    
-    
-    df_muons.to_csv('data_' + args.kind + '/output_Muon_' + args.fileNumber + '.csv', header=False)
-    df_hits.to_csv('data_' + args.kind + '/output_Hit_' + args.fileNumber + '.csv', header=False)
-    df_prop.to_csv('data_' + args.kind + '/output_Prop_' + args.fileNumber + '.csv', header=False)
+
+
+    muons.to_csv('data_' + args.kind + '/output_Muon_' + args.fileNumber + '.csv', header=False)
+    hits.to_csv('data_' + args.kind + '/output_Hit_' + args.fileNumber + '.csv', header=False)
+    props.to_csv('data_' + args.kind + '/output_Prop_' + args.fileNumber + '.csv', header=False)
+
+
     
     
 
