@@ -157,13 +157,13 @@ if __name__ == '__main__':
                 
                 for i in range(0, len(DT_st)):
                     if(DT_st[i]==1):
-                        MB1[int(phi_coor[i]), int(z_coor[i])] = 255
+                        MB1[int(phi_coor[i]), int(z_coor[i])] = 1.0
                     elif(DT_st[i]==2):
-                        MB2[int(phi_coor[i]), int(z_coor[i])] = 255
+                        MB2[int(phi_coor[i]), int(z_coor[i])] = 1.0
                     elif(DT_st[i]==3):
-                        MB3[int(phi_coor[i]), int(z_coor[i])] = 255
+                        MB3[int(phi_coor[i]), int(z_coor[i])] = 1.0
                     elif(DT_st[i]==4):
-                        MB4[int(phi_coor[i]), int(z_coor[i])] = 255
+                        MB4[int(phi_coor[i]), int(z_coor[i])] = 1.0
                         
                 MB = np.array([MB1, MB2, MB3, MB4])
 
