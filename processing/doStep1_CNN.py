@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import argparse
+from PIL import Image
 
 # python doStep1.py --FileNumber 1
 
