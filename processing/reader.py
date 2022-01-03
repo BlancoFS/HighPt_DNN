@@ -5,6 +5,7 @@ import os
 import uproot
 import pandas as pd
 import numpy as np
+import awkward as ak
 
 # python reader.py --inputDir /gpfs/projects/cms/fernanpe/ZprimeToMuMu_M-5000_TuneCP5_13TeV-madgraphMLM-pythia8/ZprimeToMuMu_M-5000_ntupler/200630_000605/0000/ --part 1
 
@@ -30,14 +31,13 @@ if __name__ == '__main__':
     data_hits = uproot.open(args.inputDir + 'tree_' + args.fileNumber + '.root')['Events'].arrays(variables_hits)
     data_props = uproot.open(args.inputDir + 'tree_' + args.fileNumber + '.root')['Events'].arrays(variables_props)
 
-    muons = pd.DataFrame.from_dict(data_muons)
-    hits = pd.DataFrame.from_dict(data_hits)
-    props = pd.DataFrame.from_dict(data_props)
+    muons = ak.to_pandas(data_muons)
+    hits = ak.to_pandas(data_hits)
+    props = ak.to_pandas(data_props)
 
-
-    muons.to_csv('data_' + args.kind + '/output_Muon_' + args.fileNumber + '.csv', header=False)
-    hits.to_csv('data_' + args.kind + '/output_Hit_' + args.fileNumber + '.csv', header=False)
-    props.to_csv('data_' + args.kind + '/output_Prop_' + args.fileNumber + '.csv', header=False)
+    muons.to_csv('data_' + args.kind + '/output_Muon_' + args.fileNumber + '.csv', header=True)
+    hits.to_csv('data_' + args.kind + '/output_Hit_' + args.fileNumber + '.csv', header=True)
+    props.to_csv('data_' + args.kind + '/output_Prop_' + args.fileNumber + '.csv', header=True)
 
 
     
