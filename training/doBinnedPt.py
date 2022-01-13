@@ -10,10 +10,10 @@ if __name__ == '__main__':
   
   sample = pd.read_csv("train.csv")
   
-  sample.loc[fortest['Muon_TunePTrack_pt'] > 0, 'binnedPt'] = 4
-  sample.loc[fortest['Muon_TunePTrack_pt'] < 3050, 'binnedPt'] = 3
-  sample.loc[fortest['Muon_TunePTrack_pt'] < 2100, 'binnedPt'] = 2
-  sample.loc[fortest['Muon_TunePTrack_pt'] < 1150, 'binnedPt'] = 1
+  sample.loc[sample['Muon_TunePTrack_pt'] > 0, 'binnedPt'] = 4
+  sample.loc[sample['Muon_TunePTrack_pt'] < 3050, 'binnedPt'] = 3
+  sample.loc[sample['Muon_TunePTrack_pt'] < 2100, 'binnedPt'] = 2
+  sample.loc[sample['Muon_TunePTrack_pt'] < 1150, 'binnedPt'] = 1
   
   sample.to_csv('train_binnedPt.csv')
   
