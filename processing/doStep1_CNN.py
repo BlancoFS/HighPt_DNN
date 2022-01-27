@@ -166,7 +166,11 @@ if __name__ == '__main__':
                     elif(DT_st[i]==4):
                         MB4[int(phi_coor[i]), int(z_coor[i])] = 1.0
                         
-                MB = np.array([MB1, MB2, MB3, MB4])
+                MB = np.zeros(znbin*phinbin*4).reshape(znbin, phinbin, 4)
+                
+                for i in range(0, znbin):
+                    for j in range(0, phinbin):
+                        MB[i, j] = [MB1[i, j], MB2[i, j], MB3[i, j], MB4[i, j]]
 
                 img = Image.fromarray(MB, 'RGBA')
                 img.save('Images/train_' + str(df_hit.Hit_Eventid.to_numpy()[0]) + '.png')
