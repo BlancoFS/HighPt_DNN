@@ -34,8 +34,6 @@ test = pd.read_csv('test.csv')
 
 test = test[(test.Muon_TunePTrack_pt < 10000)]
 
-
-
 Rreco = (test.Muon_Genpt.values-test.Muon_TunePTrack_pt.values)/test.Muon_Genpt.values
 Rpred = (test.Muon_Genpt.values-model.predict(test[variablesTrain]).ravel())/test.Muon_Genpt
 pTpred = model.predict(test[variablesTrain]).ravel()
@@ -43,6 +41,43 @@ tunePpT = test.Muon_TunePTrack_pt.values
 genpT = test.Muon_Genpt.values
 RelRreco = np.std(abs(test.Muon_Genpt.values-test.Muon_TunePTrack_pt.values)/test.Muon_Genpt.values)
 RelPred = np.std(abs(test.Muon_Genpt.values-model.predict(test[variablesTrain]).ravel())/test.Muon_Genpt)
+
+
+#### 2D PLOTS TuneP vs DNN
+
+plt.figure(figsize=(15,10)) 
+plt.hist2d(genpT, tunePpT, bins=[50,50] ,range=[[200, 4000], [200, 8000]], norm=mpl.colors.LogNorm())
+plt.xlabel('GenpT [GeV]',fontsize=14)
+plt.ylabel('TuneP_pT [GeV]',fontsize=14)
+plt.tick_params(axis='both', labelsize=13)
+
+#legend
+clb = plt.colorbar()
+clb.set_label('nMuons', fontsize=15)
+clb.ax.tick_params(labelsize=13)
+
+plt.savefig('data_test_tuneppt_genpt.png')
+plt.clf()
+plt.cla()
+
+
+plt.figure(figsize=(15,10)) 
+plt.hist2d(genpT, pTpred, bins=[50,50] ,range=[[200, 4000], [200, 8000]], norm=mpl.colors.LogNorm())
+plt.xlabel('GenpT [GeV]',fontsize=14)
+plt.ylabel('Predicted pT [GeV]',fontsize=14)
+plt.tick_params(axis='both', labelsize=13)
+
+
+#legend
+clb = plt.colorbar()
+clb.set_label('nMuons', fontsize=15)
+clb.ax.tick_params(labelsize=13)
+
+
+plt.savefig('data_test_ptpred_genpt.png')
+plt.clf()
+plt.cla()
+
 
 
 #### First Histogram: Full pT range
@@ -126,10 +161,24 @@ canvas_full.SaveAs("Fits/c_TuneP_vs_Model_R.pdf")
 pt_bins = [200, 500, 800, 1100, 1400, 1700, 2000, 2300, 2600, 2900, 3200, 3500, 3800, 4000]
 #pt_bins = [200, 500, 800, 1100, 1400, 1700, 2000, 2300, 2600, 2900, 4000]
 
+mean_values = []
+std_values = []
+mean_reco_values = []
+std_reco_values = []
+x = []
+ex = []
+mean_err = []
+std_err = []
+mean_reco_err = []
+std_reco_err = []
+
 for i in range (0, len(pt_bins)-1):
 
     low_pt = pt_bins[i]
     high_pt = pt_bins[i+1]
+    
+    x.append((low_pt+high_pt)/2)
+    ex.append((high_pt-low_pt)/2)
 
     tmp = test.loc[test.Muon_Genpt>low_pt]
     tmp = tmp.loc[tmp.Muon_Genpt<high_pt]
@@ -202,3 +251,40 @@ for i in range (0, len(pt_bins)-1):
 
     canvas.Draw()
     canvas.SaveAs("/gpfs/users/blancose/HighPT/CMSSW_11_0_3/src/HighPt_DNN/training/Fits/c_TuneP_vs_Model_R_" + str(low_pt) + "_" + str(high_pt) + ".pdf")
+    
+    mean_reco_values.append(gauss_reco.GetParameter(1))
+    std_reco_values.append(gauss_reco.GetParameter(2))
+    mean_values.append(gauss_pred.GetParameter(1))
+    std_values.append(gauss_pred.GetParameter(2))
+    mean_err.appen(gauss_pred.GetParError(1))
+    std_err.append(gauss_pred.GetParError(2))
+    mean_reco_err.appen(gauss_reco.GetParError(1))
+    std_reco_err.append(gauss_reco.GetParError(2))
+    
+    
+    
+plt.errorbar(x, Relreco, yerr=std_reco_err, xerr=ex , linewidth=5, fmt='o')
+plt.errorbar(x, Relpred, yerr=std_err, xerr=ex , linewidth=5, fmt='o')
+
+plt.xlabel('Muon GenpT [GeV]',fontsize=20)
+plt.ylabel('$\sigma_{R}$',fontsize=26)
+plt.tick_params(axis='both', labelsize=20)
+plt.legend(['TuneP', 'DNN'], loc='upper left')
+plt.savefig('SigmaR_vs_genpT.png')
+
+plt.clf()
+plt.cla()
+
+plt.errorbar(x, mean_reco_values, yerr=mean_reco_err, xerr=ex , linewidth=5, fmt='o')
+plt.errorbar(x, mean_values, yerr=mean_err, xerr=ex , linewidth=5, fmt='o')
+
+
+plt.xlabel('Muon GenpT [GeV]',fontsize=20)
+plt.ylabel('$\mu_{R}$',fontsize=26)
+plt.tick_params(axis='both', labelsize=20)
+plt.legend(['TuneP', 'DNN'], loc='upper left')
+plt.savefig('MeanR_vs_genpT.png')
+
+plt.clf()
+plt.cla()
+    
